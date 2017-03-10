@@ -1,119 +1,144 @@
 ---
-title: webpack
+title: Git 本地工作流
 ---
 
-webpack是一款强大的模块加载器兼打包工具，它能把各种资源，例如JS（含JSX）、coffee、样式（含less/sass）、图片等都作为模块来使用和处理。
+Git 是一个**版本控制**工具，什么是版本控制，我们下面实际操作一下就一目了然了。
 
-接下来我们将一步步熟悉Webpack的使用，并使用它来搭建一套前端工作流。
+### Git 本地工作流
 
-### 初始化项目
+Git **本地工作流**（没有网络操作）可以分为以下几步：
 
-创建一个项目
+
+- 第一步，使用 atom 创建并编辑项目
+- 第二步，使用 `git init` 命令，把一个**普通项目**变成一个**Git 仓库**
+- 第三步，使用 `git add -A` 命令，添加修改内容到 Git
+- 第四步，使用 `git commit -m"my commit msg"` 命令，制作一个版本
+
+
+### 下面来走一个 Git 本地工作流的 Demo
+
+首先，我们先来创建一个项目：
 
 ```
-$ mkdir webpack-demos && cd webpack-demos
+mkdir trygit
+```
+
+
+然后进入项目，开始添加一个 index.html 文件
+
+
+```
+cd trygit
+atom .
+```
+
+现在我们来把一个**普通项目**变成一个**仓库** ，需要执行
+
+```
 $ git init
-$ touch README.md .gitignore
-$ npm init
+Initialized empty Git repository in /Users/peter/Desktop/project/.git/
 ```
 
-编辑.gitignore
+init 是英文 initialization （初始化）的缩写。
+输出信息的英文意思是：
+
+>已经在 /Users/peter/Desktop/project/.git/ 初始化了一个空的 git 仓库
+
+运行这个命令之后，如果我们敲
 
 ```
-node_modules
-*.log*
-.idea
+ls
 ```
 
-建立src和build两个目录
+会看到没有任何变化。因为，命令创建的 `.git` 文件夹是一个隐藏文件夹（所有以点开头的文件或者文件夹在 Linux 系统下都是隐藏的）。
+
+要查看隐藏文件夹，可以敲
 
 ```
-// src 目录存放源码，build 目录存放编译打包之后的资源
-$ mkdir src build
-$ cd src && touch index.js component.js
-$ cd ../ && touch index.html
-/* src/index.js */
-var component = require('./component.js');
-
-component();
-/* src/component.js */
-module.exports = function(){
-  alert('component');
-}
-/*index.html */
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Webpack demos</title>
-</head>
-<body>
-  <div id="app"></div>
-  <script src="./build/bundle.js"></script>
-</body>
-</html>
+ls -a
 ```
 
-下载webpack和webpack-dev-server
+这样可以看到输出中包含 `.git` 文件夹了。
+
+`.git` 文件夹是 Git 仓库的心脏，未来所有的版本历史都会保存在 .git 文件夹中。所以
 
 ```
-# 安装并保存在项目的依赖中
-$ npm install --save-dev webpack webpack-dev-server
-# 如果想直接在命令行使用webpack或webpack-dev-server命令，请全局安装
-$ npm install -g webpack webpack-dev-server
+仓库 == 项目 + .git/改版历史
 ```
 
-创建webpack的配置文件
+注：**仓库** ，英文是 **Repo** ，是我们使用 Git，Github 必须要了解的一个概念。
+
+如果要制作一个**版本**，一共分两步：添加修改和制作版本。
+
+首先来添加修改到 git ：
 
 ```
-$ touch webpack.config.js
-```
-> 请注意webpack.config.js这个文件命名，默认情况下需要严格按照这个命名，不然会报Output filename not configured的错误；另外，如果不按这个命名，那么在webpack运行的时候通过--conf这个参数指定配置文件，比如：webpack --config conf.js
-
-进行基本配置
-
-```
-var path = require('path');
-
-module.exports = {
-    entry: path.resolve(__dirname, 'src/index.js'),
-    output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: 'bundle.js'
-    },
-};
+git add -A
 ```
 
-执行webpack命令,这里我们用的是项目内安装的webpack
+注： -A 的意思是添加“所有当前修改内容”
 
-```
-$ ./node_modules/.bin/webpack
-```
-可以看到控制台出现如下信息：
-
-```
-Hash: cf7cc9272c664f542fcb
-Version: webpack 1.13.0
-Time: 80ms
-    Asset     Size  Chunks             Chunk Names
-bundle.js  2.04 kB       0  [emitted]  main
-   [0] ./src/index.js 60 bytes {0} [built]
-   [1] ./src/component.js 57 bytes {0} [built]
-```
-build目录下也新增了一个bundle.js文件
+要想把添加的内容制作成版本，还需要执行
 
 
-### webpack和webpack-dev-server的基本命令
+```
+git commit -m"I add a file"
+```
+
+注： `commit` 的意思是”做一件很重要的事”，但是在 git 这里，它的意思就是**版本** 。`-m` 就是 message 的简写，后面的内容是**再版留言** 。
+
+问题来了，新用户首次执行上面的命令，会看到下面的报错信息
 
 ```
-$ webpack --help
+please tell me who you are
 ```
-执行以上命令，可以在控制台看到很多webpack相关的命令，选取几个常用的介绍下。
 
-- webpack 开发环境下编译
-- webpack -p 产品编译及压缩
-- webpack --watch 开发环境下持续的监听文件变动来进行编译(非常快!)
-- webpack -d 引入 source maps
-- webpack --progress 显示构建进度
-- webpack --display-error-details 这个很有用，显示打包过程中的出错信息
-- webpack --profile 输出性能数据，可以看到每一步的耗时
+解决方法是，运行下面的命令
+
+```
+git config --global user.name  "Peter Wang"
+git config --global user.email  "happypeter1983@gmail.com"
+```
+
+来设置用户名和邮箱。这样再次执行
+
+```
+$ git commit -m"I add a file"
+[master (root-commit) dcb0329] I add index.html
+ 1 file changed, 1 insertion(+)
+ create mode 100644 index.html
+```
+
+就可以成功制作一个版本了。也就是 Git 本地工作流就完成了一个完整的循环。
+
+后续如果再做第二第三个版本，就是只需要：
+
+- 修改内容用 atom
+- git add -A
+- git commit -m"msg"
+
+即可。
+
+>注意：一个项目中 git init 只需要执行一次就可以了。
+
+
+### 查看改版历史
+
+改版历史（所有我们做过的版本组成的一条线，就叫历史）中，会包含多个版本。每个版本中起码要包含4个 W （ Who When What Why ）。
+
+那么如何来查看改版历史呢？
+
+```
+git log -p
+```
+
+`log` 是日志的意思。`-p` 是 patch （补丁，也就是修改内容）的缩写。
+
+
+小技巧：`q` 可以退出 `git log -p` 的界面，敲 `j` 可以往下翻，敲 `k` 可以往上翻。
+
+>注意，实际中 Peter 查看版本历史从来不用 git log 命令，而是使用一个前端工具叫做 tig 。安装和使用方式可以参考：http://www.haoduoshipin.com/v/49.html
+
+### 总结
+
+这样，我们就学会了如何在本地创建 git **版本**，查看各个**版本** ，下面一节我们来研究如何把本地的这些**版本**上传到 github.com 。

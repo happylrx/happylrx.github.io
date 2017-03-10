@@ -1,71 +1,57 @@
 ---
-title: github
+title: Atom 编辑器
 ---
 
+在 Web 开发领域，最受高手追捧的是三款编辑器：vim ，sublime ，atom 。Peter 用 vim 5年，sublime 3年，现在 Peter 用 atom 。Atom 的使用跟 sublime 类似，但是功能更强，所以课程中主力编辑器选择 atom 。vim 太难学，不推荐作为主力编辑器，但是后面涉及服务器管理的时候，还是需要用到 vim 。
 
-### 准备工作：删除第一天创建的项目
+### 安装
 
-如何删除一个 github.com 的仓库呢？
+深度系统上，到 atom.io 网站，下载 .deb 的包，进行安装。
 
-首先到仓库页面：https://github.com/funnydeer/funnydeer.github.io
-
-点 Settings（设置）这一个标签。打开的页面底部有一个 “Delete this repository” 按钮，意思是”删除这个仓库“，点击按钮。打开的界面中，输入一下这个仓库的名字 funnydeer.github.io 就可以把这个仓库删除了。
-
-删除仓库之后，我们要做的事情是：
-
-如何把本地已有的仓库上传到github
-
-### 第一步：创建本地项目
-
-项目名称是任意的，但是我们这里想做的事情是上传比较，所以，本地这个仓库名要和github上项目保持一致
-
-### 第二步：创建github.com上的同名仓库
-
-### 添加 ssh key
-
-为了达成开发机和 github.com 的互信。因为开发过程中，我们需要用本地机器向 github.com 的仓库中 写东西（ git push ），同时我们又不想每次都输入密码，所以我们就用 ssh key 的形式来达成互信，过程 如下：
-
-在本地机器上生成一对 ssh key ，一个公钥，一个私钥
-把公钥添加到 github.com
-具体操作如下：
-
-首先本地运行 ssh-keygen 命令
-到 ~/.ssh/id_rsa.pub 也就是公钥文件中，拷贝公钥字符串
-把字符串粘贴到 github.com -> setting -> ssh keys -> add
-这样添加 ssh key 的工作就完成了，以后我们执行 git push 这样的命令就不会看到如下错误了：
-
-...permission denied...
-...make sure ... correct access right ...
-大功告成。
-
-git clone 命令
-
-要想把 github 上的一个项目代码下载到本地有两种方式，一种就是普通下载（ download ）。但是，开发者 基本上会选择另外一种方式，就是 clone 。
-
-git clone git@github.com:happypeter/digicity.git
-clone 的特点就是不仅仅可以得到最新代码，而且可以得到整个改版历史。而普通下载只能得到最新版本。
-
-### git 各个命令的作用
-
-- git push 把本地仓库中有，而远端对应仓库中没有的版本推送到远端
-- git pull 把远端仓库中有，而本地对应仓库中没有的版本拉到本地
-- git clone 把远端仓库，克隆到本地
-
-### 添加门牌号
+### 打开一个项目
 
 ```
-git remote add origin https://git.coding.net/arronwjn/arronwjn.git
+cd project/
+atom .
 ```
 
-查看门牌号：
+### 创建文件
+
+默认就是用 Ctrl-n ，保存用 Ctrl-s 。
+
+但是 Peter 平时使用一个插件来进行文件创建操作，叫做 [Advanced New File](https://atom.io/packages/advanced-open-file) 。
+
+### 自动补齐
+
+现在我想输入 `h1<tab>` 就自动补齐成
 
 ```
-
-cat .git/config
+<h1></h1>
 ```
 
-上传到github
+这个需要安装一个包叫做 emmet 。
+
+### 装包
+
+使用 Ctrl-Shift-P 打开命令面板，然后搜索
 
 ```
-git push -u origin master
+install packages
 ```
+
+可以搜到 `Install Packages And Themes` ，选中，回车，就进入了装包界面。
+
+搜索报名，例如 `pigments` ，搜到之后，点 install 就可以了。
+
+查看 atom 中已经安装了哪些包，就用 Ctrl-Shift-P 打开命令面板，然后输入
+
+```
+Uninstall Packages
+```
+
+就可以看到所有已经安装的包了。
+
+
+### 参考
+
+- [Atom 爱上 JS](http://haoqicat.com/atom-love-js)
