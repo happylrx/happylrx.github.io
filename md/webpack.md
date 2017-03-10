@@ -139,6 +139,32 @@ git log -p
 
 >注意，实际中 Peter 查看版本历史从来不用 git log 命令，而是使用一个前端工具叫做 tig 。安装和使用方式可以参考：http://www.haoduoshipin.com/v/49.html
 
+### 忽略特定文件或者文件夹
+
+有时候，项目文件夹中有一些文件或者文件夹，并不是我们写的代码，例如 node_modules 。那么我们就没有必要把它们进行版本控制，这样我们可以吧这个文件或者文件夹的名字添加到，项目文件夹内的一个特殊文件，叫做 .gitignore 中。
+
+```
+cd project/
+atom .gitignore
+```
+
+然后，.gitignore 中填写如下内容：
+
+```
+node_modules
+```
+
+这样，git 就会忽略 node_modules 文件夹，以及里面的所有文件了。
+
+没有 .gitignore 的技巧，我们就会把 node_modules 中的文件也进行版本控制，这样带来两个明显不爽的现象：
+
+- 版本历史混乱
+- git push 到 github.com 就会很慢
+
+
+所以，我们需要学习 .gitignore 的配置技巧。
+
+
 ### 总结
 
 这样，我们就学会了如何在本地创建 git **版本**，查看各个**版本** ，下面一节我们来研究如何把本地的这些**版本**上传到 github.com 。
